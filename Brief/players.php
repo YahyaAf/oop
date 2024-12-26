@@ -1,3 +1,27 @@
+<?php
+include_once './connexion/Database.php';
+include_once './crud/Player.php';
+
+$database = new Database();
+$db = $database->getConnection();
+
+$player = new Player($db);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $player->name = $_POST['name'];
+    $player->club = $_POST['club'];
+    $player->nationality = $_POST['nationality'];
+    $player->rating = $_POST['rating'];
+    $player->position = $_POST['position'];
+
+    if ($player->create()) {
+        echo "Player was created successfully!";
+    } else {
+        echo "Error creating player.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +35,7 @@
 <div class="max-w-4xl mx-auto mt-10 p-8 bg-white shadow-lg rounded-lg">
     <h2 class="text-2xl font-semibold text-gray-700 mb-4">Player Form</h2>
 
-    <form action="your_action_page.php" method="POST">
+    <form action="" method="POST">
         <!-- Name -->
         <div class="mb-4">
             <label for="name" class="block text-gray-600 font-medium">Name</label>
