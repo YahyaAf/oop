@@ -1,5 +1,4 @@
 <?php
-include_once '../connexion/Database.php';
 
 class Player {
     private $conn;

@@ -14,11 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $player->rating = $_POST['rating'];
     $player->position = $_POST['position'];
 
-    if ($player->create()) {
-        echo "Player was created successfully!";
-    } else {
-        echo "Error creating player.";
-    }
 }
 ?>
 
