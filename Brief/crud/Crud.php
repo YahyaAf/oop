@@ -1,6 +1,6 @@
 <?php
 
-class Player {
+class Crud {
     private $conn;
     private $table_name;
 

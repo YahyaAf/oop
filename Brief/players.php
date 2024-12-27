@@ -1,13 +1,13 @@
 <?php
 include_once './connexion/Database.php';
-include_once './crud/Player.php';
+include_once './crud/Crud.php';
 
 
 $database = new Database("players");
 $db = $database->getConnection();
 
 
-$player = new Player($db, "players");
+$player = new CRUD($db, "players");
 
 
 // $player->fields = [
