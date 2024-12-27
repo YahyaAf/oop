@@ -14,7 +14,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $player->rating = $_POST['rating'];
     $player->position = $_POST['position'];
 
+
+    if ($player->create()) {
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    } else {
+        echo "Error creating player.";
+    }
 }
+
+
+if (isset($_GET['delete_id'])) {
+    $player->id = $_GET['delete_id'];
+    if ($player->delete()) {
+        echo "Player deleted successfully!";
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    } else {
+        echo "Error deleting player.";
+    }
+}
+
+
+$stmt = $player->read();
 ?>
 
 <!DOCTYPE html>
@@ -78,6 +100,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Submit</button>
         </div>
     </form>
+
+    <!-- Table to display players -->
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">Player List</h2>
+    <table class="min-w-full table-auto border-collapse">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="py-2 px-4 border border-gray-300">Name</th>
+                <th class="py-2 px-4 border border-gray-300">Club</th>
+                <th class="py-2 px-4 border border-gray-300">Nationality</th>
+                <th class="py-2 px-4 border border-gray-300">Rating</th>
+                <th class="py-2 px-4 border border-gray-300">Position</th>
+                <th class="py-2 px-4 border border-gray-300">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+                <tr>
+                    <td class="py-2 px-4 border border-gray-300"><?php echo $row['name']; ?></td>
+                    <td class="py-2 px-4 border border-gray-300"><?php echo $row['club']; ?></td>
+                    <td class="py-2 px-4 border border-gray-300"><?php echo $row['nationality']; ?></td>
+                    <td class="py-2 px-4 border border-gray-300"><?php echo $row['rating']; ?></td>
+                    <td class="py-2 px-4 border border-gray-300"><?php echo $row['position']; ?></td>
+                    <td class="py-2 px-4 border border-gray-300">
+                        <a href="update.php?id=<?php echo $row['id']; ?>" class="text-blue-500">Update</a> |
+                        <a href="players.php?delete_id=<?php echo $row['id']; ?>" class="text-red-500">Delete</a>
+                    </td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
 </div>
 
 </body>
