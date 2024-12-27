@@ -11,9 +11,9 @@ $player = new CRUD($db, "players");
 
 
 // $player->fields = [
-//     "name" => "Lionel Messi",
-//     "club" => "Inter Miami",
-//     "nationality" => "Argentina",
+//     "name" => "Yahya",
+//     "club" => "OCS",
+//     "nationality" => "Morroco",
 //     "rating" => 94,
 //     "position" => "RW"
 // ];
@@ -26,11 +26,11 @@ foreach ($players as $row) {
 }
 
 
-// $player->id = 21;
+// $player->id = 24;
 // $player->fields = [
-//     "name" => "Cristiano Ronaldo",
-//     "club" => "Al-Nassr",
-//     "nationality" => "Portugal",
+//     "name" => "Maradona",
+//     "club" => "died",
+//     "nationality" => "Argentina",
 //     "rating" => 92,
 //     "position" => "ST"
 // ];
