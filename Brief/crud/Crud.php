@@ -1,6 +1,6 @@
 <?php
 
-class Crud {
+class CRUD {
     private $conn;
     private $table_name;
 
