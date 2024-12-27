@@ -2,98 +2,77 @@
 
 class Player {
     private $conn;
-    private $table_name = "players";
+    private $table_name;
 
+    // Object properties (these can vary based on table structure)
     public $id;
-    public $name;
-    public $club;
-    public $nationality;
-    public $rating;
-    public $position;
+    public $fields = [];
 
-    public function __construct($db) {
+    public function __construct($db, $table_name) {
         $this->conn = $db;
+        $this->table_name = $table_name;
     }
 
+    // Create a new record
     public function create() {
-        $query = "INSERT INTO " . $this->table_name . " SET name=:name, club=:club, nationality=:nationality, rating=:rating, position=:position";
-        
+        $field_names = implode(", ", array_keys($this->fields));
+        $placeholders = ":" . implode(", :", array_keys($this->fields));
+
+        $query = "INSERT INTO " . $this->table_name . " ($field_names) VALUES ($placeholders)";
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":club", $this->club);
-        $stmt->bindParam(":nationality", $this->nationality);
-        $stmt->bindParam(":rating", $this->rating);
-        $stmt->bindParam(":position", $this->position);
-
-        if ($stmt->execute()) {
-            return true;
+        foreach ($this->fields as $key => $value) {
+            $stmt->bindParam(":$key", $this->fields[$key]);
         }
 
-        return false;
+        return $stmt->execute();
     }
 
+    // Read all records
     public function read() {
-        $query = "SELECT id, name, club, nationality, rating, position FROM " . $this->table_name;
-        
+        $query = "SELECT * FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
         return $stmt;
     }
 
+    // Delete a record by ID
     public function delete() {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
-        
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $this->id);
 
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
+        return $stmt->execute();
     }
 
+    // Update a record by ID
     public function update() {
-        $query = "UPDATE " . $this->table_name . " SET name = :name, club = :club, nationality = :nationality, rating = :rating, position = :position WHERE id = :id";
-        
+        $set_clause = [];
+        foreach ($this->fields as $key => $value) {
+            $set_clause[] = "$key = :$key";
+        }
+        $set_clause_str = implode(", ", $set_clause);
+
+        $query = "UPDATE " . $this->table_name . " SET $set_clause_str WHERE id = :id";
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":club", $this->club);
-        $stmt->bindParam(":nationality", $this->nationality);
-        $stmt->bindParam(":rating", $this->rating);
-        $stmt->bindParam(":position", $this->position);
+        foreach ($this->fields as $key => $value) {
+            $stmt->bindParam(":$key", $this->fields[$key]);
+        }
         $stmt->bindParam(":id", $this->id);
 
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
+        return $stmt->execute();
     }
 
+    // Read one record by ID
     public function readOne() {
-        $query = "SELECT id, name, club, nationality, rating, position FROM " . $this->table_name . " WHERE id = :id LIMIT 0,1";
-        
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $this->id);
-
         $stmt->execute();
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($row) {
-            $this->name = $row['name'];
-            $this->club = $row['club'];
-            $this->nationality = $row['nationality'];
-            $this->rating = $row['rating'];
-            $this->position = $row['position'];
-            return $row;
-        }
-
-        return null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 
