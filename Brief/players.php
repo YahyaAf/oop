@@ -101,7 +101,6 @@ $stmt = $player->read();
         </div>
     </form>
 
-    <!-- Table to display players -->
     <h2 class="text-xl font-semibold text-gray-700 mb-4">Player List</h2>
     <table class="min-w-full table-auto border-collapse">
         <thead>
@@ -123,7 +122,7 @@ $stmt = $player->read();
                     <td class="py-2 px-4 border border-gray-300"><?php echo $row['rating']; ?></td>
                     <td class="py-2 px-4 border border-gray-300"><?php echo $row['position']; ?></td>
                     <td class="py-2 px-4 border border-gray-300">
-                        <a href="update.php?id=<?php echo $row['id']; ?>" class="text-blue-500">Update</a> |
+                        <a href="crud/update.php?id=<?php echo $row['id']; ?>" class="text-blue-500">Update</a> |
                         <a href="players.php?delete_id=<?php echo $row['id']; ?>" class="text-red-500">Delete</a>
                     </td>
                 </tr>

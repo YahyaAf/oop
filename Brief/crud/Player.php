@@ -15,7 +15,6 @@ class Player {
         $this->conn = $db;
     }
 
-    // Créer un joueur
     public function create() {
         $query = "INSERT INTO " . $this->table_name . " SET name=:name, club=:club, nationality=:nationality, rating=:rating, position=:position";
         
@@ -34,7 +33,6 @@ class Player {
         return false;
     }
 
-    // Récupérer tous les joueurs
     public function read() {
         $query = "SELECT id, name, club, nationality, rating, position FROM " . $this->table_name;
         
@@ -44,7 +42,6 @@ class Player {
         return $stmt;
     }
 
-    // Supprimer un joueur
     public function delete() {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
         
@@ -57,8 +54,7 @@ class Player {
 
         return false;
     }
-    
-    // Mettre à jour un joueur
+
     public function update() {
         $query = "UPDATE " . $this->table_name . " SET name = :name, club = :club, nationality = :nationality, rating = :rating, position = :position WHERE id = :id";
         
@@ -76,6 +72,28 @@ class Player {
         }
 
         return false;
+    }
+
+    public function readOne() {
+        $query = "SELECT id, name, club, nationality, rating, position FROM " . $this->table_name . " WHERE id = :id LIMIT 0,1";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $this->id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            $this->name = $row['name'];
+            $this->club = $row['club'];
+            $this->nationality = $row['nationality'];
+            $this->rating = $row['rating'];
+            $this->position = $row['position'];
+            return $row;
+        }
+
+        return null;
     }
 }
 
