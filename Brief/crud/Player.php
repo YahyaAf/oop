@@ -4,7 +4,7 @@ class Player {
     private $conn;
     private $table_name;
 
-    // Object properties (these can vary based on table structure)
+  
     public $id;
     public $fields = [];
 
@@ -13,7 +13,7 @@ class Player {
         $this->table_name = $table_name;
     }
 
-    // Create a new record
+  
     public function create() {
         $field_names = implode(", ", array_keys($this->fields));
         $placeholders = ":" . implode(", :", array_keys($this->fields));
@@ -28,7 +28,7 @@ class Player {
         return $stmt->execute();
     }
 
-    // Read all records
+ 
     public function read() {
         $query = "SELECT * FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
@@ -37,7 +37,7 @@ class Player {
         return $stmt;
     }
 
-    // Delete a record by ID
+
     public function delete() {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
         $stmt = $this->conn->prepare($query);
@@ -46,7 +46,7 @@ class Player {
         return $stmt->execute();
     }
 
-    // Update a record by ID
+
     public function update() {
         $set_clause = [];
         foreach ($this->fields as $key => $value) {
@@ -65,7 +65,7 @@ class Player {
         return $stmt->execute();
     }
 
-    // Read one record by ID
+
     public function readOne() {
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
