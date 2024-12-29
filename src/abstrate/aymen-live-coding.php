@@ -17,7 +17,7 @@ abstract class BankAccount implements IBankAccount  {
         $this->insertTransaction("Account initilze with: $balance");
     }
 
-    abstract function withdraw($amount);
+    // abstract function withdraw($amount);
 
     public function deposit($amount) {
         if($amount <= 0) {
@@ -86,13 +86,17 @@ class NormalAccount extends BankAccount {
 
 // create a new object of SavingAccount
 $account1 = new SavingAccount(500, "Ahmed");
+echo "<br>";
 // deposit 1000
 $account1->deposit(1000);
+echo "<br>";
 // withdraw 1000
 $account1->withdraw(1000);
+echo "<br>";
 // withdraw 700
 $account1->withdraw(700);
-
+echo "<br>";
 $account2 = new SavingAccount(20, "yassine");
 echo BankAccount::getTotalAccounts();
+echo "<br>";
 $account1->getAllTransactions();

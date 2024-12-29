@@ -22,7 +22,9 @@ $player = new CRUD($db, "players");
 
 $players = $player->read();
 foreach ($players as $row) {
-    print_r($row);
+    echo '<pre>';
+       print_r($row);
+    echo '</pre>';
 }
 
 
